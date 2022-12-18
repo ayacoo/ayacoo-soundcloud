@@ -1,4 +1,4 @@
-# TYPO3 Extension ayacoo-soundcloud
+# TYPO3 Extension ayacoo_soundcloud
 
 ## 1 Features
 
@@ -39,7 +39,7 @@ In order not to have to access the oEmbed interface permanently, four fields are
 
 ### 3.2 Release Management
 
-ayacoo-soundcloud uses [**semantic versioning**][2], which means, that
+ayacoo_soundcloud uses [**semantic versioning**][2], which means, that
 
 * **bugfix updates** (e.g. 1.0.0 => 1.0.1) just includes small bugfixes or security relevant stuff without breaking
   changes,
