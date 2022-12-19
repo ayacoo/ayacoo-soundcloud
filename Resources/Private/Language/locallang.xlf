@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:ayacoo_soundcloud/Resources/Private/Language/locallang.xlf" date="2022-10-13T20:22:32Z" product-name="ayacoo_soundcloud">
+		<header/>
+		<body>
+			<trans-unit id="ayacoo_soundcloud.update" resname="ayacoo_soundcloud.update">
+				<source>Update Soundcloud preview image</source>
+			</trans-unit>
+			<trans-unit id="ayacoo_soundcloud.alert.success" resname="ayacoo_soundcloud.alert.success">
+				<source>Success</source>
+			</trans-unit>
+			<trans-unit id="ayacoo_soundcloud.alert.success.text" resname="ayacoo_soundcloud.alert.success.text">
+				<source>Soundcloud preview image updated</source>
+			</trans-unit>
+			<trans-unit id="ayacoo_soundcloud.alert.error" resname="ayacoo_soundcloud.alert.error">
+				<source>Failed to update Soundcloud preview image</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
