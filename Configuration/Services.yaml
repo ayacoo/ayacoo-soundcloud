@@ -1,0 +1,24 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: true
+
+  Ayacoo\AyacooSoundcloud\:
+    resource: '../Classes/*'
+    exclude:
+      - '../Classes/Domain/Model/*'
+      - '../Classes/Helper/*'
+
+  Ayacoo\AyacooSoundcloud\EventListener\FileListEventListener:
+    tags:
+      - name: event.listener
+        identifier: 'ayacoo/ayacoosoundcloud/filelist-listener'
+        event: TYPO3\CMS\Filelist\Event\ProcessFileListActionsEvent
+
+  Ayacoo\AyacooSoundcloud\Command\UpdateMetadataCommand:
+    tags:
+      - name: 'console.command'
+        command: 'soundcloud:updateMetadata'
+        description: 'Updates the Soundcloud metadata'
+        schedulable: true

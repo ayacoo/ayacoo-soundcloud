@@ -4,6 +4,7 @@
 
 * Soundcloud audios can be created as a file in the TYPO3 file list
 * Soundcloud audios can be used and output with the text with media element
+* Update metadata via filelist action or command
 
 ## 2 Usage
 
@@ -27,40 +28,62 @@ For the output, the HTML is used directly from [Soundcloud][4].
 
 #### SQL changes
 
-In order not to have to access the oEmbed interface permanently, four fields are added to the sys_file_metadata table
+In order not to have to access the oEmbed interface permanently, four fields are
+added to the sys_file_metadata table
+
+### 2.3 Backend Preview
+
+In the backend, the preview is used by TextMediaRenderer. For online media, this
+only displays the provider's icon, in this case twitch. If you want to display
+the thumbnail, for example, you need your own renderer that overwrites
+Textmedia. An example renderer is available in the project. Caution: This
+overwrites all text media elements, so only use this renderer as a basis.
+
+You register a renderer in the TCA `Configuration/TCA/Overrides/tt_content.php`
+with `$GLOBALS['TCA']['tt_content']['types']['textmedia']['previewRenderer'] = \Ayacoo\AyacooSoundcloud\Rendering\SoundcloudPreviewRenderer::class;`
+
+Documentation: https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/ApiOverview/ContentElements/CustomBackendPreview.html
 
 ## 3 Administration corner
 
 ### 3.1 Versions and support
 
-| AyacooSoundcloud | TYPO3       | PHP       | Support / Development                   |
-|------------------|-------------| ----------|---------------------------------------- |
-| 1.x              | 11.x | 7.4 - 8.0 | features, bugfixes, security updates    |
+| AyacooSoundcloud  | TYPO3  | PHP         | Support / Development                |
+|-------------------|--------|-------------|--------------------------------------|
+| 2.x               | 12.x   | 8.1         | features, bugfixes, security updates ||                  |             |           |                                         |
+| 1.x               | 11.x   | 7.4 - 8.0   | bugfixes, security updates           |
 
 ### 3.2 Release Management
 
 ayacoo_soundcloud uses [**semantic versioning**][2], which means, that
 
-* **bugfix updates** (e.g. 1.0.0 => 1.0.1) just includes small bugfixes or security relevant stuff without breaking
+* **bugfix updates** (e.g. 1.0.0 => 1.0.1) just includes small bugfixes or
+  security relevant stuff without breaking
   changes,
-* **minor updates** (e.g. 1.0.0 => 1.1.0) includes new features and smaller tasks without breaking changes,
-* and **major updates** (e.g. 1.0.0 => 2.0.0) breaking changes which can be refactorings, features or bugfixes.
+* **minor updates** (e.g. 1.0.0 => 1.1.0) includes new features and smaller
+  tasks without breaking changes,
+* and **major updates** (e.g. 1.0.0 => 2.0.0) breaking changes which can be
+  refactorings, features or bugfixes.
 
 ### 3.3 Contribution
 
-**Pull Requests** are gladly welcome! Nevertheless please don't forget to add an issue and connect it to your pull
+**Pull Requests** are gladly welcome! Nevertheless please don't forget to add an
+issue and connect it to your pull
 requests. This
 is very helpful to understand what kind of issue the **PR** is going to solve.
 
-**Bugfixes**: Please describe what kind of bug your fix solve and give us feedback how to reproduce the issue. We're
+**Bugfixes**: Please describe what kind of bug your fix solve and give us
+feedback how to reproduce the issue. We're
 going
 to accept only bugfixes if we can reproduce the issue.
 
 ## 4 Thanks / Notices
 
-Special thanks to Georg Ringer and his [news][3] extension. A good template to build a TYPO3 extension. Here, for
-example, the structure of README.md is used.
-
+- Special thanks to Georg Ringer and his [news][3] extension. A good template to
+  build a TYPO3 extension. Here, for example, the structure of README.md is
+  used.
+- Thanks also to b13 for the [online-media-updater][5] extension. Parts of it
+  were allowed to be included in this extension.
 
 [1]: https://getcomposer.org/
 
@@ -69,3 +92,10 @@ example, the structure of README.md is used.
 [3]: https://github.com/georgringer/news
 
 [4]: https://developers.soundcloud.com/docs/oembed
+
+[5]: https://github.com/b13/online-media-updater
+
+## 5 Support
+
+If you are happy with the extension and would like to support it in any way, I
+would appreciate the support of social institutions.
