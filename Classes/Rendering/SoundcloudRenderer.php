@@ -13,6 +13,9 @@ use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperInterface;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
 
 /**
  * Soundcloud renderer class
@@ -20,8 +23,10 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class SoundcloudRenderer implements FileRendererInterface
 {
     public function __construct(
-        private readonly EventDispatcherInterface $eventDispatcher
-    ) {
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly ConfigurationManager     $configurationManager
+    )
+    {
 
     }
 
@@ -57,8 +62,13 @@ class SoundcloudRenderer implements FileRendererInterface
 
     public function render(FileInterface $file, $width, $height, array $options = [], $usedPathsRelativeToCurrentScript = false)
     {
+        $output = $file->getProperty('soundcloud_html') ?? '';
+        if ($this->getPrivacySetting()) {
+            $output = str_replace('src', 'data-name="iframe-soundcloud" data-src', $output);
+        }
+
         $modifySoundcloudOutputEvent = $this->eventDispatcher->dispatch(
-            new ModifySoundcloudOutputEvent($file->getProperty('soundcloud_html') ?? '')
+            new ModifySoundcloudOutputEvent($output)
         );
         return $modifySoundcloudOutputEvent->getOutput();
     }
@@ -83,5 +93,24 @@ class SoundcloudRenderer implements FileRendererInterface
             }
         }
         return $this->onlineMediaHelper;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function getPrivacySetting(): bool
+    {
+        try {
+            $privacy = false;
+            $extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(
+                ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
+            );
+            if (isset($extbaseFrameworkConfiguration['plugin.']['tx_ayacoosoundcloud.'])) {
+                $privacy = (bool)$extbaseFrameworkConfiguration['plugin.']['tx_ayacoosoundcloud.']['settings.']['privacy'] ?? false;
+            }
+            return $privacy;
+        } catch (InvalidConfigurationTypeException $e) {
+            return false;
+        }
     }
 }
