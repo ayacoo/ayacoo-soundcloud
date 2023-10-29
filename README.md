@@ -20,11 +20,47 @@ Run the following command within your [Composer][1] based TYPO3 project:
 composer require ayacoo/ayacoo-soundcloud
 ```
 
+And as database fields are added, the DB Analyzer must also be run once.
+
 ### 2.2 Hints
 
 #### Output
 
 For the output, the HTML is used directly from [Soundcloud][4].
+
+#### ModifySoundcloudOutputEvent
+
+If you want to modify the output of the Soundcloud HTML, you can use the `ModifySoundcloudOutputEvent`.
+
+##### EventListener registration
+
+In your extension, extend `Configuration/Services.yaml` once:
+
+```yaml
+Vendor\ExtName\EventListener\SoundcloudOutputEventListener:
+  tags:
+    - name: event.listener
+      identifier: 'soundcloud/output'
+      event: Ayacoo\AyacooSoundcloud\Event\ModifySoundcloudOutputEvent
+```
+
+```php
+<?php
+
+namespace Vendor\ExtName\EventListener;
+
+use Ayacoo\AyacooSoundcloud\Event\ModifySoundcloudOutputEvent;
+
+class SoundcloudOutputEventListener
+{
+    public function __invoke(ModifySoundcloudOutputEvent $event): void
+    {
+        $output = $event->getOutput();
+        $output = str_replace('src', 'data-src', $output);
+        $event->setOutput($output);
+    }
+}
+```
 
 #### SQL changes
 

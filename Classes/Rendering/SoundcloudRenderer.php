@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Ayacoo\AyacooSoundcloud\Rendering;
 
+use Ayacoo\AyacooSoundcloud\Event\ModifySoundcloudOutputEvent;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
@@ -17,6 +19,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class SoundcloudRenderer implements FileRendererInterface
 {
+    public function __construct(
+        private readonly EventDispatcherInterface $eventDispatcher
+    ) {
+
+    }
+
     /**
      * @var OnlineMediaHelperInterface|false
      */
@@ -49,7 +57,10 @@ class SoundcloudRenderer implements FileRendererInterface
 
     public function render(FileInterface $file, $width, $height, array $options = [], $usedPathsRelativeToCurrentScript = false)
     {
-        return $file->getProperty('soundcloud_html') ?? '';
+        $modifySoundcloudOutputEvent = $this->eventDispatcher->dispatch(
+            new ModifySoundcloudOutputEvent($file->getProperty('soundcloud_html') ?? '')
+        );
+        return $modifySoundcloudOutputEvent->getOutput();
     }
 
     /**
