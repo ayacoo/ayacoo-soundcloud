@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Ayacoo\AyacooSoundcloud\Tests\Functional\Domain\Repository;
 
 use Ayacoo\AyacooSoundcloud\Domain\Repository\FileRepository;
-use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class FileRepositoryTest extends FunctionalTestCase
