@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Ayacoo\AyacooSoundcloud\Rendering;
@@ -35,7 +36,7 @@ class SoundcloudPreviewRenderer extends StandardContentPreviewRenderer
                 $fileObject = $fileReferenceObject->getOriginalFile();
                 if (!$fileObject->isMissing()) {
                     $content .= '<a href="' . $fileObject->getPublicUrl() . '" target="_blank">';
-                    $content .= htmlspecialchars($fileObject->getProperty('title'));
+                    $content .= htmlspecialchars((string)$fileObject->getProperty('title'));
 
                     // use latest processed file (64px)
                     /**
@@ -48,7 +49,7 @@ class SoundcloudPreviewRenderer extends StandardContentPreviewRenderer
 
                     // use original thumbnail and control the size
                     $image = $fileObject->getMetaData()->offsetGet('soundcloud_thumbnail_url') ?? '';
-                    $content .= '<br/><img style="height: 150px;" src="' . htmlspecialchars($image) . '" />';
+                    $content .= '<br/><img style="height: 150px;" src="' . htmlspecialchars((string)$image) . '" />';
 
                     $content .= '</a>';
                     $content .= '<hr/>';

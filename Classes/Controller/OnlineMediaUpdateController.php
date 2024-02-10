@@ -21,8 +21,6 @@ class OnlineMediaUpdateController
     /**
      * AJAX endpoint for storing the URL as a sys_file record
      *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
      * @throws FileDoesNotExistException
      */
     public function updateAction(ServerRequestInterface $request): ResponseInterface
@@ -72,10 +70,6 @@ class OnlineMediaUpdateController
 
     /**
      * We need to get an update on the metadata
-     *
-     * @param File $file
-     * @param array $metaData
-     * @return void
      */
     protected function updateMetaData(File $file, array $metaData): void
     {
@@ -83,7 +77,7 @@ class OnlineMediaUpdateController
         $metadataRepository->update($file->getUid(), [
             'width' => (int)$metaData['width'],
             'height' => (int)$metaData['height'],
-            'soundcloud_thumbnail_url' => $metaData['soundcloud_thumbnail_url']
+            'soundcloud_thumbnail_url' => $metaData['soundcloud_thumbnail_url'],
         ]);
     }
 }

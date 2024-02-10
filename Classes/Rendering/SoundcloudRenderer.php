@@ -24,10 +24,8 @@ class SoundcloudRenderer implements FileRendererInterface
 {
     public function __construct(
         private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly ConfigurationManager     $configurationManager
-    )
-    {
-
+        private readonly ConfigurationManager $configurationManager
+    ) {
     }
 
     /**
@@ -60,11 +58,11 @@ class SoundcloudRenderer implements FileRendererInterface
         return ($file->getMimeType() === 'audio/soundcloud' || $file->getExtension() === 'soundcloud') && $this->getOnlineMediaHelper($file) !== false;
     }
 
-    public function render(FileInterface $file, $width, $height, array $options = [], $usedPathsRelativeToCurrentScript = false)
+    public function render(FileInterface $file, $width, $height, array $options = [])
     {
         $output = $file->getProperty('soundcloud_html') ?? '';
         if ($this->getPrivacySetting()) {
-            $output = str_replace('src', 'data-name="iframe-soundcloud" data-src', $output);
+            $output = str_replace('src', 'data-name="iframe-soundcloud" data-src', (string)$output);
         }
 
         $modifySoundcloudOutputEvent = $this->eventDispatcher->dispatch(
@@ -76,7 +74,6 @@ class SoundcloudRenderer implements FileRendererInterface
     /**
      * Get online media helper
      *
-     * @param FileInterface $file
      * @return false|OnlineMediaHelperInterface
      */
     protected function getOnlineMediaHelper(FileInterface $file)
@@ -95,9 +92,6 @@ class SoundcloudRenderer implements FileRendererInterface
         return $this->onlineMediaHelper;
     }
 
-    /**
-     * @return bool
-     */
     protected function getPrivacySetting(): bool
     {
         try {
@@ -109,7 +103,7 @@ class SoundcloudRenderer implements FileRendererInterface
                 $privacy = (bool)$extbaseFrameworkConfiguration['plugin.']['tx_ayacoosoundcloud.']['settings.']['privacy'] ?? false;
             }
             return $privacy;
-        } catch (InvalidConfigurationTypeException $e) {
+        } catch (InvalidConfigurationTypeException) {
             return false;
         }
     }

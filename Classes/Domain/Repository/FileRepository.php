@@ -41,10 +41,6 @@ class FileRepository
         return $queryBuilder->executeQuery()->fetchAllAssociative();
     }
 
-    /**
-     * @param string $tableName
-     * @return QueryBuilder
-     */
     protected function getQueryBuilder(string $tableName = ''): QueryBuilder
     {
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);

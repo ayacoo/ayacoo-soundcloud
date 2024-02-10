@@ -34,12 +34,11 @@ class UpdateMetadataCommand extends Command
     }
 
     public function __construct(
-        protected FileRepository          $fileRepository,
-        protected MetaDataRepository      $metadataRepository,
-        protected ResourceFactory         $resourceFactory,
+        protected FileRepository $fileRepository,
+        protected MetaDataRepository $metadataRepository,
+        protected ResourceFactory $resourceFactory,
         protected ProcessedFileRepository $processedFileRepository
-    )
-    {
+    ) {
         parent::__construct();
     }
 
@@ -76,7 +75,6 @@ class UpdateMetadataCommand extends Command
 
         return Command::SUCCESS;
     }
-
 
     protected function handlePreviewImage(AbstractOnlineMediaHelper $onlineMediaHelper, File $file): void
     {

@@ -30,9 +30,9 @@ class SoundcloudHelper extends AbstractOEmbedHelper
         // Try to get the Soundcloud code from given url.
         // https://www.soundlcoud.com/<username>/<path_segment>?parameter # Audio detail URL
         if (preg_match('%(?:.*)soundcloud\.com\/([a-z.\-_0-9]*)\/([a-z.\-_0-9]*)%i', $url, $match)) {
-            $audioId = $match[1] . '/'. $match[2];
+            $audioId = $match[1] . '/' . $match[2];
         }
-        if (empty($audioId)) {
+        if ($audioId === null || $audioId === '' || $audioId === '0') {
             return null;
         }
 
@@ -45,7 +45,6 @@ class SoundcloudHelper extends AbstractOEmbedHelper
      * We override the abstract function so that we can integrate our own handling for the title field
      *
      * @param string $mediaId
-     * @param Folder $targetFolder
      * @param string $fileExtension
      * @return File
      */
@@ -58,7 +57,7 @@ class SoundcloudHelper extends AbstractOEmbedHelper
             $oEmbed = $this->getOEmbedData($mediaId);
             if (!empty($oEmbed['title'])) {
                 $title = $this->handleSoundcloudTitle($oEmbed['title']);
-                if (!empty($title)) {
+                if ($title !== '' && $title !== '0') {
                     $fileName = $title . '.' . $fileExtension;
                 }
             }
@@ -97,7 +96,6 @@ class SoundcloudHelper extends AbstractOEmbedHelper
      * Get meta data for OnlineMedia item
      * Using the meta data from oEmbed
      *
-     * @param File $file
      * @return array with metadata
      */
     public function getMetaData(File $file)
@@ -122,10 +120,6 @@ class SoundcloudHelper extends AbstractOEmbedHelper
         return $metaData;
     }
 
-    /**
-     * @param string $title
-     * @return string
-     */
     protected function handleSoundcloudTitle(string $title): string
     {
         return trim(mb_substr(strip_tags($title), 0, 255));
