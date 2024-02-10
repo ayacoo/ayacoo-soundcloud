@@ -46,7 +46,7 @@
 		"ci:php:csfix": "php ./.Build/bin/php-cs-fixer fix  -v --config ./Build/php-cs-fixer/php-cs-fixer.php ./",
 		"ci:php:lint": "find .*.php *.php Classes Configuration Tests -name '*.php' -print0 | xargs -r -0 -n 1 -P 4 php -l",
 		"ci:tests:create-directories": "mkdir -p .Build/public/typo3temp/var/tests",
-		"ci:tests:functional": [
+		"ci:tests:functional:local": [
 			"@ci:tests:create-directories",
 			"export typo3DatabaseName=\"typo3_test\" && export typo3DatabaseUsername=\"root\" && export typo3DatabasePassword=\"root\" && export typo3DatabaseHost=\"db\" && export TYPO3_PATH_WEB=\".Build/public\" && ./.Build/bin/phpunit -c ./Configuration/FunctionalTests.xml Tests/Functional"
 		],
