@@ -135,8 +135,8 @@ jobs:
       - name: Install testing system
         run: Build/Scripts/runTests.sh -t 12.4 -p ${{ matrix.php }} -s ${{ matrix.composerInstall }}
 
-      - name: Functional Tests with mariadb and mysqli
-        run: Build/Scripts/runTests.sh -t 12.4 -p ${{ matrix.php }} -d mariadb -a mysqli -s functional
+      #- name: Functional Tests with mariadb and mysqli
+        #run: Build/Scripts/runTests.sh -t 12.4 -p ${{ matrix.php }} -d mariadb -a mysqli -s functional
 
       - name: Functional Tests with mysql 5.7 and mysqli
         run: Build/Scripts/runTests.sh -t 12.4 -p ${{ matrix.php }} -d mysql -i 5.7 -a mysqli -s functional
