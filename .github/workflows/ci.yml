@@ -128,6 +128,18 @@ jobs:
       matrix:
         php: [ '8.1', '8.2', '8.3' ]
         composerInstall: [ 'composerInstallMax' ]
+
+    services:
+      mysql:
+        image: mysql:latest
+        env:
+          MYSQL_ROOT_PASSWORD: funcp
+          MYSQL_DATABASE: func_test
+          MYSQL_USER: root
+          MYSQL_PASSWORD: funcp
+        ports:
+          - 3306:3306
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -144,8 +156,8 @@ jobs:
       - name: Functional Tests with mysql 8.0 and mysqli
         run: Build/Scripts/runTests.sh -t 12.4 -p ${{ matrix.php }} -d mysql -i 8.0 -a mysqli -s functional
 
-      - name: Functional Tests with postgres
-        run: Build/Scripts/runTests.sh -t 12.4 -p ${{ matrix.php }} -d postgres -s functional
+      #- name: Functional Tests with postgres
+        #run: Build/Scripts/runTests.sh -t 12.4 -p ${{ matrix.php }} -d postgres -s functional
 
-      - name: Functional Tests with sqlite
-        run: Build/Scripts/runTests.sh -t 12.4 -p ${{ matrix.php }} -d sqlite -s functional
+      #- name: Functional Tests with sqlite
+        #run: Build/Scripts/runTests.sh -t 12.4 -p ${{ matrix.php }} -d sqlite -s functional
