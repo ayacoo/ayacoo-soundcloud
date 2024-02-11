@@ -48,7 +48,7 @@
 		"ci:php:cs": "php ./.Build/bin/php-cs-fixer fix  --dry-run -v --config ./Build/php-cs-fixer/php-cs-fixer.php ./",
 		"ci:php:csfix": "php ./.Build/bin/php-cs-fixer fix  -v --config ./Build/php-cs-fixer/php-cs-fixer.php ./",
 		"ci:php:lint": "find .*.php *.php Classes Configuration Tests -name '*.php' -print0 | xargs -r -0 -n 1 -P 4 php -l",
-		"ci:tests:unit": ".Build/bin/phpunit -c Build/UnitTests.xml Tests/Unit"
+		"ci:tests:unit": ".Build/bin/phpunit -c Build/phpunit/UnitTests.xml Tests/Unit"
 	},
 	"extra": {
 		"typo3/cms": {
