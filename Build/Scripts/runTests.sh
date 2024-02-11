@@ -265,7 +265,7 @@ while getopts ":s:a:d:i:j:k:p:t:e:xy:z:nhuv" OPT; do
             ;;
         k)
             POSTGRES_VERSION=${OPTARG}
-            if ! [[ ${POSTGRES_VERSION} =~ ^(10|11|12|13|14)$ ]]; then
+            if ! [[ ${POSTGRES_VERSION} =~ ^(10|11|12|13|14|15|16)$ ]]; then
                 INVALID_OPTIONS+=("${OPTARG}")
             fi
             ;;

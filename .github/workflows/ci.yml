@@ -149,7 +149,7 @@ jobs:
         run: Build/Scripts/runTests.sh -t 12 -p ${{ matrix.php }} -d postgres -k 10 -s functional
 
       - name: Functional Tests with postgres (max)
-        run: Build/Scripts/runTests.sh -t 12 -p ${{ matrix.php }} -d postgres -k 14 -s functional
+        run: Build/Scripts/runTests.sh -t 12 -p ${{ matrix.php }} -d postgres -k 16 -s functional
 
       - name: Functional Tests with sqlite
         run: Build/Scripts/runTests.sh -t 12 -p ${{ matrix.php }} -d sqlite -s functional

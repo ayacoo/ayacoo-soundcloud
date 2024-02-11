@@ -26,12 +26,7 @@ class SoundcloudHelper extends AbstractOEmbedHelper
 
     public function transformUrlToFile($url, Folder $targetFolder)
     {
-        $audioId = null;
-        // Try to get the Soundcloud code from given url.
-        // https://www.soundlcoud.com/<username>/<path_segment>?parameter # Audio detail URL
-        if (preg_match('%(?:.*)soundcloud\.com\/([a-z.\-_0-9]*)\/([a-z.\-_0-9]*)%i', $url, $match)) {
-            $audioId = $match[1] . '/' . $match[2];
-        }
+        $audioId = $this->getAudioId($url);
         if ($audioId === null || $audioId === '' || $audioId === '0') {
             return null;
         }
@@ -123,5 +118,16 @@ class SoundcloudHelper extends AbstractOEmbedHelper
     protected function handleSoundcloudTitle(string $title): string
     {
         return trim(mb_substr(strip_tags($title), 0, 255));
+    }
+
+    protected function getAudioId(string $url): ?string
+    {
+        $audioId = null;
+        // Try to get the Soundcloud code from given url.
+        // https://www.soundcloud.com/<username>/<path_segment>?parameter # Audio detail URL
+        if (preg_match('%(?:.*)soundcloud\.com\/([a-z.\-_0-9]*)\/([a-z.\-_0-9]*)%i', $url, $match)) {
+            $audioId = $match[1] . '/' . $match[2];
+        }
+        return $audioId;
     }
 }
