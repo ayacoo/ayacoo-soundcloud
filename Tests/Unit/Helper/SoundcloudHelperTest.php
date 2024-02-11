@@ -40,7 +40,7 @@ final class SoundcloudHelperTest extends UnitTestCase
         self::assertEquals($expected, $result);
     }
 
-    public function handleSoundcloudTitleDataProvider(): array
+    public static function handleSoundcloudTitleDataProvider(): array
     {
         return [
             'No filter needed' => [
