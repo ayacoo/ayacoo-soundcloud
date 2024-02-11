@@ -45,19 +45,19 @@ final class SoundcloudHelperTest extends UnitTestCase
         return [
             'No filter needed' => [
                 'Test',
-                'Test'
+                'Test',
             ],
             'Strip Tags' => [
                 '<h1>Test</h1>',
-                'Test'
+                'Test',
             ],
             'Trim' => [
                 'Test     ',
-                'Test'
+                'Test',
             ],
             'MaxLength' => [
                 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lore',
-                'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata'
+                'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata',
             ],
         ];
     }
