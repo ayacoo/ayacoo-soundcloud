@@ -23,11 +23,7 @@
     <coverage/>
     <testsuites>
         <testsuite name="Functional tests">
-            <!--
-                This path either needs an adaption in extensions, or an extension's
-                test location path needs to be given to phpunit.
-            -->
-            <directory suffix="Test.php">./</directory>
+            <directory>../Tests/Functional/</directory>
         </testsuite>
     </testsuites>
     <php>
