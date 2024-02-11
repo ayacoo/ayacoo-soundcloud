@@ -65,7 +65,7 @@ handleDbmsAndDriverOptions() {
 
 # Load help text into $HELP
 read -r -d '' HELP <<EOF
-georgringer/news test runner. Execute unit test suite and some other details.
+ayacoo/ayacoo-soundcloud test runner. Execute unit test suite and some other details.
 Also used by github for test execution.
 
 Recommended docker version is >=20.10 for xdebug break pointing to work reliably, and
@@ -73,7 +73,7 @@ a recent docker-compose (tested >=1.21.2) is needed.
 
 Usage: $0 [options] [file]
 
-No arguments: Run all unit tests with PHP 7.4
+No arguments: Run all unit tests with PHP 8.1
 
 Options:
     -s <...>
@@ -106,7 +106,7 @@ Options:
             - mysql: use mysql
             - postgres: use postgres
 
-    -i <10.2|10.3|10.4|10.5|10.6|10.7>
+    -i <10.2|10.3|10.4|10.5|10.6|10.7|10.8|10.9|10.10|10.11>
         Only with -d mariadb
         Specifies on which version of mariadb tests are performed
             - 10.2 (default)
@@ -115,6 +115,10 @@ Options:
             - 10.5
             - 10.6
             - 10.7
+            - 10.8
+            - 10.9
+            - 10.10
+            - 10.11
 
     -j <5.5|5.6|5.7|8.0>
         Only with -d mysql
@@ -135,17 +139,17 @@ Options:
 
     -p <7.4|8.0|8.1|8.2|8.3>
         Specifies the PHP minor version to be used
-            - 7.4 (default): use PHP 7.4
+            - 7.4: use PHP 7.4
             - 8.0: use PHP 8.0
-            - 8.1: use PHP 8.1
+            - 8.1 (default): use PHP 8.1
             - 8.2: use PHP 8.2
             - 8.3: use PHP 8.3
 
     -t <11|12>
         Only with -s composerUpdate
         Specifies the TYPO3 core major version to be used
-            - 11 (default): use TYPO3 core v11
-            - 12: use TYPO3 core v12
+            - 11: use TYPO3 core v11
+            - 12 (default): use TYPO3 core v12
 
     -e "<composer, phpunit or codeception options>"
         Only with -s functional|unit|composer
@@ -212,8 +216,8 @@ else
 fi
 TEST_SUITE=""
 DBMS="mariadb"
-PHP_VERSION="7.4"
-TYPO3_VERSION="11"
+PHP_VERSION="8.1"
+TYPO3_VERSION="12"
 PHP_XDEBUG_ON=0
 PHP_XDEBUG_PORT=9003
 EXTRA_TEST_OPTIONS=""
@@ -249,7 +253,7 @@ while getopts ":s:a:d:i:j:k:p:t:e:xy:z:nhuv" OPT; do
             ;;
         i)
             MARIADB_VERSION=${OPTARG}
-            if ! [[ ${MARIADB_VERSION} =~ ^(10.2|10.3|10.4|10.5|10.6|10.7)$ ]]; then
+            if ! [[ ${MARIADB_VERSION} =~ ^(10.2|10.3|10.4|10.5|10.6|10.7|10.8|10.9|10.10|10.11)$ ]]; then
                 INVALID_OPTIONS+=("${OPTARG}")
             fi
             ;;
