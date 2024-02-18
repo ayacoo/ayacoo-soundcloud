@@ -40,7 +40,9 @@ class OnlineMediaUpdateController
         // remove online media temp image
         $videoId = $onlineMediaViewHelper->getOnlineMediaId($file);
         $temporaryFileName = $this->getTempFolderPath() . $file->getExtension() . '_' . md5($videoId) . '.jpg';
-        @unlink($temporaryFileName);
+        if (file_exists($temporaryFileName)) {
+            unlink($temporaryFileName);
+        }
         $previewPath = $onlineMediaViewHelper->getPreviewImage($file);
 
         $this->updateMetaData($file, $onlineMediaViewHelper->getMetaData($file));

@@ -59,8 +59,12 @@ final class SoundcloudHelperTest extends UnitTestCase
                 'Test',
             ],
             'MaxLength' => [
-                'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lore',
-                'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata',
+                'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut 
+                labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores 
+                et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lore',
+                'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut 
+                labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores 
+                et ea rebum. Stet clita kasd gubergren, no sea takimata',
             ],
         ];
     }
@@ -185,7 +189,6 @@ final class SoundcloudHelperTest extends UnitTestCase
             ->willReturn('alanwalker/better-off-alone-pt-iii-1');
         $soundcloudHelperMock->expects(self::any())->method('getOEmbedData')->willReturn(null);
 
-
         $result = $soundcloudHelperMock->getMetaData($fileResourceMock);
         self::assertSame([], $result);
     }
@@ -193,7 +196,8 @@ final class SoundcloudHelperTest extends UnitTestCase
     /**
      * @test
      */
-    public function getPublicUrlReturnsPublicUrl() {
+    public function getPublicUrlReturnsPublicUrl()
+    {
         $fileResourceMock = $this->createMock(File::class);
         $fileResourceMock->expects(self::any())->method('getMimeType')->willReturn('audio/soundcloud');
 

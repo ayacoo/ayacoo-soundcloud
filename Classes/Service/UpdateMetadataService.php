@@ -23,7 +23,6 @@ class UpdateMetadataService
         protected ResourceFactory $resourceFactory,
         protected ProcessedFileRepository $processedFileRepository
     ) {
-
     }
 
     public function process(int $limit, SymfonyStyle $io): void
@@ -63,7 +62,9 @@ class UpdateMetadataService
 
         $videoId = $onlineMediaHelper->getOnlineMediaId($file);
         $temporaryFileName = $this->getTempFolderPath() . $file->getExtension() . '_' . md5($videoId) . '.jpg';
-        @unlink($temporaryFileName);
+        if (file_exists($temporaryFileName)) {
+            unlink($temporaryFileName);
+        }
         $onlineMediaHelper->getPreviewImage($file);
     }
 

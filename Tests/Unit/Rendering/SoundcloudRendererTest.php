@@ -8,10 +8,8 @@ use Ayacoo\AyacooSoundcloud\Event\ModifySoundcloudOutputEvent;
 use Ayacoo\AyacooSoundcloud\Helper\SoundcloudHelper;
 use Ayacoo\AyacooSoundcloud\Rendering\SoundcloudRenderer;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -27,7 +25,6 @@ final class SoundcloudRendererTest extends UnitTestCase
         parent::setUp();
 
         $eventDispatcherMock = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
-        //$eventDispatcherMock->expects(self::atLeastOnce())->method('dispatch')->with(self::anything())->willReturnArgument(0);
 
         $configurationManagerMock = $this->getMockBuilder(ConfigurationManager::class)
             ->onlyMethods(['getConfiguration'])
@@ -76,7 +73,6 @@ final class SoundcloudRendererTest extends UnitTestCase
     /**
      * @test
      * @dataProvider getPrivacySettingWithExistingConfigReturnsBooleanDataProvider
-     * @return void
      */
     public function getPrivacySettingWithExistingConfigReturnsBoolean(array $pluginConfig, bool $expected)
     {
@@ -110,29 +106,29 @@ final class SoundcloudRendererTest extends UnitTestCase
                     'plugin.' => [
                         'tx_ayacoosoundcloud.' => [
                             'settings.' => [
-                                'privacy' => true
-                            ]
-                        ]
-                    ]
+                                'privacy' => true,
+                            ],
+                        ],
+                    ],
                 ],
-                true
+                true,
             ],
             'Privacy setting false' => [
                 [
                     'plugin.' => [
                         'tx_ayacoosoundcloud.' => [
                             'settings.' => [
-                                'privacy' => false
-                            ]
-                        ]
-                    ]
+                                'privacy' => false,
+                            ],
+                        ],
+                    ],
                 ],
-                false
+                false,
             ],
             'Privacy setting non-existing' => [
                 [],
-                false
-            ]
+                false,
+            ],
         ];
     }
 
@@ -192,10 +188,10 @@ final class SoundcloudRendererTest extends UnitTestCase
             'plugin.' => [
                 'tx_ayacoosoundcloud.' => [
                     'settings.' => [
-                        'privacy' => true
-                    ]
-                ]
-            ]
+                        'privacy' => true,
+                    ],
+                ],
+            ],
         ];
 
         $configurationManagerMock
@@ -204,15 +200,20 @@ final class SoundcloudRendererTest extends UnitTestCase
             ->with(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT)
             ->willReturn($pluginConfig);
 
-        $subject = new SoundcloudRenderer($eventDispatcherMock, $configurationManagerMock);
+        $subject = new SoundcloudRenderer(
+            $eventDispatcherMock,
+            $configurationManagerMock
+        );
 
         $result = $subject->render($fileResourceMock, 100, 100);
         self::assertSame($expected, $result);
     }
 
-
-    private function buildReflectionForProtectedFunction(string $methodName, array $params, SoundcloudRenderer $subject)
-    {
+    protected function buildReflectionForProtectedFunction(
+        string $methodName,
+        array $params,
+        SoundcloudRenderer $subject
+    ): mixed {
         $reflectionCalendar = new \ReflectionClass($subject);
         $method = $reflectionCalendar->getMethod($methodName);
         $method->setAccessible(true);

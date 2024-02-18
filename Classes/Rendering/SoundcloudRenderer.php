@@ -55,7 +55,8 @@ class SoundcloudRenderer implements FileRendererInterface
      */
     public function canRender(FileInterface $file)
     {
-        return ($file->getMimeType() === 'audio/soundcloud' || $file->getExtension() === 'soundcloud') && $this->getOnlineMediaHelper($file) !== false;
+        return ($file->getMimeType() === 'audio/soundcloud' || $file->getExtension() === 'soundcloud') &&
+            $this->getOnlineMediaHelper($file) !== false;
     }
 
     public function render(FileInterface $file, $width, $height, array $options = [])
@@ -84,7 +85,8 @@ class SoundcloudRenderer implements FileRendererInterface
                 $orgFile = $orgFile->getOriginalFile();
             }
             if ($orgFile instanceof File) {
-                $this->onlineMediaHelper = GeneralUtility::makeInstance(OnlineMediaHelperRegistry::class)->getOnlineMediaHelper($orgFile);
+                $this->onlineMediaHelper = GeneralUtility::makeInstance(OnlineMediaHelperRegistry::class)
+                    ->getOnlineMediaHelper($orgFile);
             } else {
                 $this->onlineMediaHelper = false;
             }
@@ -99,8 +101,9 @@ class SoundcloudRenderer implements FileRendererInterface
             $extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(
                 ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
             );
-            if (isset($extbaseFrameworkConfiguration['plugin.']['tx_ayacoosoundcloud.'])) {
-                $privacy = (bool)$extbaseFrameworkConfiguration['plugin.']['tx_ayacoosoundcloud.']['settings.']['privacy'] ?? false;
+            $extSettings = $extbaseFrameworkConfiguration['plugin.']['tx_ayacoosoundcloud.'];
+            if (isset($extSettings)) {
+                $privacy = (bool)$extSettings['settings.']['privacy'] ?? false;
             }
             return $privacy;
         } catch (InvalidConfigurationTypeException) {
