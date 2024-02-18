@@ -9,7 +9,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class FileRepositoryTest extends FunctionalTestCase
 {
-    protected array $testExtensionsToLoad = ['ayacoo/ayacoo-soundcloud'];
+    protected array $testExtensionsToLoad = ['ayacoo_soundcloud'];
 
     private FileRepository $subject;
 

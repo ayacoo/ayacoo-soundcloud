@@ -53,7 +53,7 @@ class UpdateMetadataCommand extends Command
         foreach ($audios as $audio) {
             $file = $this->resourceFactory->getFileObject($audio['uid']);
             $metaData = $soundcloudHelper->getMetaData($file);
-            if (!empty($metaData)) {
+            if ($metaData !== []) {
                 $newMetaData = [
                     'width' => (int)$metaData['width'],
                     'height' => (int)$metaData['height'],

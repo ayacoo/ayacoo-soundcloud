@@ -50,11 +50,9 @@ class SoundcloudHelper extends AbstractOEmbedHelper
             $fileName = $mediaId . '.' . $fileExtension;
 
             $oEmbed = $this->getOEmbedData($mediaId);
-            if (!empty($oEmbed['title'])) {
-                $title = $this->handleSoundcloudTitle($oEmbed['title']);
-                if ($title !== '' && $title !== '0') {
-                    $fileName = $title . '.' . $fileExtension;
-                }
+            $title = $this->handleSoundcloudTitle($oEmbed['title'] ?? '');
+            if ($title !== '' && $title !== '0') {
+                $fileName = $title . '.' . $fileExtension;
             }
             $file = $this->createNewFile($targetFolder, $fileName, $mediaId);
         }
@@ -72,12 +70,12 @@ class SoundcloudHelper extends AbstractOEmbedHelper
     public function getPreviewImage(File $file)
     {
         $properties = $file->getProperties();
-        $previewImageUrl = $properties['soundcloud_thumbnail_url'] ?? '';
+        $previewImageUrl = trim($properties['soundcloud_thumbnail_url'] ?? '');
 
         $audioId = $this->getOnlineMediaId($file);
         $temporaryFileName = $this->getTempFolderPath() . 'soundcloud_' . md5($audioId) . '.jpg';
 
-        if (!empty($previewImageUrl)) {
+        if ($previewImageUrl !== '') {
             $previewImage = GeneralUtility::getUrl($previewImageUrl);
             file_put_contents($temporaryFileName, $previewImage);
             GeneralUtility::fixPermissions($temporaryFileName);
@@ -93,23 +91,23 @@ class SoundcloudHelper extends AbstractOEmbedHelper
      *
      * @return array with metadata
      */
-    public function getMetaData(File $file)
+    public function getMetaData(File $file): array
     {
         $metaData = [];
 
         $oEmbed = $this->getOEmbedData($this->getOnlineMediaId($file));
-        if ($oEmbed) {
+        if ($oEmbed !== null) {
             $metaData['width'] = (int)$oEmbed['width'];
             // We only get the value "100%" from the oEmbed query
             // The 225 pixels come from the 16:9 format at 400 pixels
             $metaData['height'] = 225;
-            if (empty($file->getProperty('title'))) {
-                $metaData['title'] = $this->handleSoundcloudTitle($oEmbed['title']);
+            if ($file->getProperty('title') !== '') {
+                $metaData['title'] = $this->handleSoundcloudTitle($oEmbed['title'] ?? '');
             }
-            $metaData['author'] = $oEmbed['author_name'];
-            $metaData['soundcloud_html'] = $oEmbed['html'];
-            $metaData['soundcloud_thumbnail_url'] = $oEmbed['thumbnail_url'];
-            $metaData['soundcloud_author_url'] = $oEmbed['author_url'];
+            $metaData['author'] = $oEmbed['author_name'] ?? '';
+            $metaData['soundcloud_html'] = $oEmbed['html'] ?? '';
+            $metaData['soundcloud_thumbnail_url'] = $oEmbed['thumbnail_url'] ?? '';
+            $metaData['soundcloud_author_url'] = $oEmbed['author_url'] ?? '';
         }
 
         return $metaData;

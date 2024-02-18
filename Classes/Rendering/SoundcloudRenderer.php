@@ -62,7 +62,7 @@ class SoundcloudRenderer implements FileRendererInterface
     {
         $output = $file->getProperty('soundcloud_html') ?? '';
         if ($this->getPrivacySetting()) {
-            $output = str_replace('src', 'data-name="iframe-soundcloud" data-src', (string)$output);
+            $output = str_replace('src', 'data-name="iframe-soundcloud" data-src', $output);
         }
 
         $modifySoundcloudOutputEvent = $this->eventDispatcher->dispatch(

@@ -30,7 +30,7 @@ class SoundcloudPreviewRenderer extends StandardContentPreviewRenderer
             $fileReferences = BackendUtility::resolveFileReferences('tt_content', 'assets', $row);
             foreach ($fileReferences as $fileReferenceObject) {
                 // Do not show previews of hidden references
-                if ($fileReferenceObject->getProperty('hidden')) {
+                if ($fileReferenceObject->getProperty('hidden') === true) {
                     continue;
                 }
                 $fileObject = $fileReferenceObject->getOriginalFile();

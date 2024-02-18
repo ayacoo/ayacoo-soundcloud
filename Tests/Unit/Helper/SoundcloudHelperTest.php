@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Ayacoo\AyacooSoundcloud\Tests\Unit\Domain\Model;
+namespace Ayacoo\AyacooSoundcloud\Tests\Unit\Helper;
 
 use Ayacoo\AyacooSoundcloud\Helper\SoundcloudHelper;
+use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\AbstractOEmbedHelper;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -24,7 +25,7 @@ final class SoundcloudHelperTest extends UnitTestCase
     /**
      * @test
      */
-    public function isAbstractEntity(): void
+    public function isAbstractOEmbedHelper(): void
     {
         self::assertInstanceOf(AbstractOEmbedHelper::class, $this->subject);
     }
@@ -66,7 +67,6 @@ final class SoundcloudHelperTest extends UnitTestCase
 
     /**
      * @test
-     * @return void
      */
     public function getOEmbedUrlWithJsonFormat(): void
     {
@@ -82,7 +82,6 @@ final class SoundcloudHelperTest extends UnitTestCase
 
     /**
      * @test
-     * @return void
      */
     public function getOEmbedUrlWithXmlFormat(): void
     {
@@ -120,6 +119,99 @@ final class SoundcloudHelperTest extends UnitTestCase
             ['https://soundcloud.com/', null],
             ['https://google.com', null],
         ];
+    }
+
+    /**
+     * @test
+     */
+    public function getOEmbedDataWithEmbedDataReturnsOptimizedArray()
+    {
+        $fileResourceMock = $this->createMock(File::class);
+        $fileResourceMock->expects(self::any())->method('getMimeType')->willReturn('audio/soundcloud');
+
+        /** @var SoundcloudHelper|\PHPUnit\Framework\MockObject\MockObject $soundcloudHelperMock */
+        $soundcloudHelperMock = $this->getMockBuilder(SoundcloudHelper::class)
+            ->setConstructorArgs(['soundcloud'])
+            ->onlyMethods(['getOEmbedData', 'getOnlineMediaId'])
+            ->getMock();
+
+        $title = 'Alan Walker, Dash Berlin, Vikkstar - Better Off (Alone, Pt. III) by Alan Walker';
+        $author = 'Dash Berlin';
+        $oEmbedData = [
+            'width' => 100,
+            'height' => '100%',
+            'title' => $title,
+            'author_name' => $author,
+        ];
+
+        $soundcloudHelperMock->expects(self::any())
+            ->method('getOnlineMediaId')
+            ->with($fileResourceMock)
+            ->willReturn('alanwalker/better-off-alone-pt-iii-1');
+        $soundcloudHelperMock->expects(self::any())->method('getOEmbedData')->willReturn($oEmbedData);
+
+        $expected = [
+            'width' => 100,
+            'height' => 225,
+            'title' => $title,
+            'author' => $author,
+            'soundcloud_html' => '',
+            'soundcloud_thumbnail_url' => '',
+            'soundcloud_author_url' => '',
+        ];
+
+        $result = $soundcloudHelperMock->getMetaData($fileResourceMock);
+
+        self::assertSame($expected, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function getOEmbedDataWithoutEmbedDataReturnsEmptyArray()
+    {
+        $fileResourceMock = $this->createMock(File::class);
+        $fileResourceMock->expects(self::any())->method('getMimeType')->willReturn('audio/soundcloud');
+
+        /** @var SoundcloudHelper|\PHPUnit\Framework\MockObject\MockObject $soundcloudHelperMock */
+        $soundcloudHelperMock = $this->getMockBuilder(SoundcloudHelper::class)
+            ->setConstructorArgs(['soundcloud'])
+            ->onlyMethods(['getOEmbedData', 'getOnlineMediaId'])
+            ->getMock();
+
+        $soundcloudHelperMock->expects(self::any())
+            ->method('getOnlineMediaId')
+            ->with($fileResourceMock)
+            ->willReturn('alanwalker/better-off-alone-pt-iii-1');
+        $soundcloudHelperMock->expects(self::any())->method('getOEmbedData')->willReturn(null);
+
+
+        $result = $soundcloudHelperMock->getMetaData($fileResourceMock);
+        self::assertSame([], $result);
+    }
+
+    /**
+     * @test
+     */
+    public function getPublicUrlReturnsPublicUrl() {
+        $fileResourceMock = $this->createMock(File::class);
+        $fileResourceMock->expects(self::any())->method('getMimeType')->willReturn('audio/soundcloud');
+
+        /** @var SoundcloudHelper|\PHPUnit\Framework\MockObject\MockObject $soundcloudHelperMock */
+        $soundcloudHelperMock = $this->getMockBuilder(SoundcloudHelper::class)
+            ->setConstructorArgs(['soundcloud'])
+            ->onlyMethods(['getOnlineMediaId'])
+            ->getMock();
+
+        $soundcloudHelperMock->expects(self::any())
+            ->method('getOnlineMediaId')
+            ->with($fileResourceMock)
+            ->willReturn('alanwalker/better-off-alone-pt-iii-1');
+
+        $expected = 'https://soundcloud.com/alanwalker/better-off-alone-pt-iii-1';
+
+        $result = $soundcloudHelperMock->getPublicUrl($fileResourceMock);
+        self::assertSame($expected, $result);
     }
 
     private function buildReflectionForProtectedFunction(string $methodName, array $params)
