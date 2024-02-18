@@ -45,6 +45,7 @@ final class SoundcloudHelperTest extends UnitTestCase
 
     public static function handleSoundcloudTitleDataProvider(): array
     {
+        $maxLengthText = self::generateRandomString(300);
         return [
             'No filter needed' => [
                 'Test',
@@ -59,12 +60,8 @@ final class SoundcloudHelperTest extends UnitTestCase
                 'Test',
             ],
             'MaxLength' => [
-                'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut 
-                labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores 
-                et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lore',
-                'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut 
-                labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores 
-                et ea rebum. Stet clita kasd gubergren, no sea takimata',
+                $maxLengthText,
+                substr($maxLengthText, 0, 255),
             ],
         ];
     }
@@ -224,5 +221,12 @@ final class SoundcloudHelperTest extends UnitTestCase
         $method = $reflectionCalendar->getMethod($methodName);
         $method->setAccessible(true);
         return $method->invokeArgs($this->subject, $params);
+    }
+
+    private static function generateRandomString(int $size): string
+    {
+        $bytes = random_bytes($size);
+        $randomString = bin2hex($bytes);
+        return substr($randomString, 0, $size);
     }
 }

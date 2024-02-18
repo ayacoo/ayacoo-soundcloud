@@ -101,9 +101,9 @@ class SoundcloudRenderer implements FileRendererInterface
             $extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(
                 ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
             );
-            $extSettings = $extbaseFrameworkConfiguration['plugin.']['tx_ayacoosoundcloud.'];
-            if (isset($extSettings)) {
-                $privacy = (bool)$extSettings['settings.']['privacy'] ?? false;
+            $extSettings = $extbaseFrameworkConfiguration['plugin.']['tx_ayacoosoundcloud.']['settings.'] ?? null;
+            if (is_array($extSettings)) {
+                $privacy = (bool)$extSettings['privacy'] ?? false;
             }
             return $privacy;
         } catch (InvalidConfigurationTypeException) {
