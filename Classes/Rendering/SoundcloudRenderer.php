@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Ayacoo\AyacooSoundcloud\Rendering;
 
+use Ayacoo\AyacooSoundcloud\Event\ModifySoundcloudOutputEvent;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference;
@@ -11,12 +13,21 @@ use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperInterface;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
 
 /**
  * Soundcloud renderer class
  */
 class SoundcloudRenderer implements FileRendererInterface
 {
+    public function __construct(
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly ConfigurationManager $configurationManager
+    ) {
+    }
+
     /**
      * @var OnlineMediaHelperInterface|false
      */
@@ -44,18 +55,26 @@ class SoundcloudRenderer implements FileRendererInterface
      */
     public function canRender(FileInterface $file)
     {
-        return ($file->getMimeType() === 'audio/soundcloud' || $file->getExtension() === 'soundcloud') && $this->getOnlineMediaHelper($file) !== false;
+        return ($file->getMimeType() === 'audio/soundcloud' || $file->getExtension() === 'soundcloud') &&
+            $this->getOnlineMediaHelper($file) !== false;
     }
 
-    public function render(FileInterface $file, $width, $height, array $options = [], $usedPathsRelativeToCurrentScript = false)
+    public function render(FileInterface $file, $width, $height, array $options = [])
     {
-        return $file->getProperty('soundcloud_html') ?? '';
+        $output = $file->getProperty('soundcloud_html') ?? '';
+        if ($this->getPrivacySetting()) {
+            $output = str_replace('src', 'data-name="iframe-soundcloud" data-src', $output);
+        }
+
+        $modifySoundcloudOutputEvent = $this->eventDispatcher->dispatch(
+            new ModifySoundcloudOutputEvent($output)
+        );
+        return $modifySoundcloudOutputEvent->getOutput();
     }
 
     /**
      * Get online media helper
      *
-     * @param FileInterface $file
      * @return false|OnlineMediaHelperInterface
      */
     protected function getOnlineMediaHelper(FileInterface $file)
@@ -66,11 +85,29 @@ class SoundcloudRenderer implements FileRendererInterface
                 $orgFile = $orgFile->getOriginalFile();
             }
             if ($orgFile instanceof File) {
-                $this->onlineMediaHelper = GeneralUtility::makeInstance(OnlineMediaHelperRegistry::class)->getOnlineMediaHelper($orgFile);
+                $this->onlineMediaHelper = GeneralUtility::makeInstance(OnlineMediaHelperRegistry::class)
+                    ->getOnlineMediaHelper($orgFile);
             } else {
                 $this->onlineMediaHelper = false;
             }
         }
         return $this->onlineMediaHelper;
+    }
+
+    protected function getPrivacySetting(): bool
+    {
+        try {
+            $privacy = false;
+            $extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(
+                ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
+            );
+            $extSettings = $extbaseFrameworkConfiguration['plugin.']['tx_ayacoosoundcloud.']['settings.'] ?? null;
+            if (is_array($extSettings)) {
+                $privacy = (bool)$extSettings['privacy'] ?? false;
+            }
+            return $privacy;
+        } catch (InvalidConfigurationTypeException) {
+            return false;
+        }
     }
 }

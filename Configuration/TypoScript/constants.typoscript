@@ -1,0 +1,6 @@
+plugin.tx_ayacoosoundcloud {
+    settings {
+        # cat=plugin.tx_ayacoosoundcloud//a; type=boolean; label=Privacy (Use data-src instead of src)
+        privacy = 0
+    }
+}

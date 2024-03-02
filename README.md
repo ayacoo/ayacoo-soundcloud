@@ -20,7 +20,16 @@ Run the following command within your [Composer][1] based TYPO3 project:
 composer require ayacoo/ayacoo-soundcloud
 ```
 
-### 2.2 Hints
+And as database fields are added, the DB Analyzer must also be run once.
+
+### 2.2 TypoScript settings
+
+#### Privacy
+
+With `plugin.tx_ayacoosoundcloud.settings.privacy = 1` you can ensure that the IFrame is built with
+data-src instead of src. If you need more options to influence the HTML, you can use a PSR-14 event.
+
+### 2.3 Hints
 
 #### Output
 
@@ -31,10 +40,46 @@ For the output, the HTML is used directly from [Soundcloud][4].
 In order not to have to access the oEmbed interface permanently, four fields are
 added to the sys_file_metadata table
 
-### 2.3 Backend Preview
+## 3 Developer Corner
+
+### 3.1 ModifySoundcloudOutputEvent
+
+If you want to modify the output of the Soundcloud HTML, you can use the `ModifySoundcloudOutputEvent`.
+
+##### EventListener registration
+
+In your extension, extend `Configuration/Services.yaml` once:
+
+```yaml
+Vendor\ExtName\EventListener\SoundcloudOutputEventListener:
+  tags:
+    - name: event.listener
+      identifier: 'soundcloud/output'
+      event: Ayacoo\AyacooSoundcloud\Event\ModifySoundcloudOutputEvent
+```
+
+```php
+<?php
+
+namespace Vendor\ExtName\EventListener;
+
+use Ayacoo\AyacooSoundcloud\Event\ModifySoundcloudOutputEvent;
+
+class SoundcloudOutputEventListener
+{
+    public function __invoke(ModifySoundcloudOutputEvent $event): void
+    {
+        $output = $event->getOutput();
+        $output = str_replace('src', 'data-src', $output);
+        $event->setOutput($output);
+    }
+}
+```
+
+### 3.2 Backend Preview
 
 In the backend, the preview is used by TextMediaRenderer. For online media, this
-only displays the provider's icon, in this case twitch. If you want to display
+only displays the provider's icon, in this case soundcloud. If you want to display
 the thumbnail, for example, you need your own renderer that overwrites
 Textmedia. An example renderer is available in the project. Caution: This
 overwrites all text media elements, so only use this renderer as a basis.
@@ -44,16 +89,16 @@ with `$GLOBALS['TCA']['tt_content']['types']['textmedia']['previewRenderer'] = \
 
 Documentation: https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/ApiOverview/ContentElements/CustomBackendPreview.html
 
-## 3 Administration corner
+## 4 Administration corner
 
-### 3.1 Versions and support
+### 4.1 Versions and support
 
-| AyacooSoundcloud  | TYPO3  | PHP         | Support / Development                |
-|-------------------|--------|-------------|--------------------------------------|
-| 2.x               | 12.x   | 8.1         | features, bugfixes, security updates ||                  |             |           |                                         |
-| 1.x               | 11.x   | 7.4 - 8.0   | bugfixes, security updates           |
+| AyacooSoundcloud  | TYPO3  | PHP       | Support / Development                |
+|-------------------|--------|-----------|--------------------------------------|
+| 2.x               | 12.x   | 8.1 - 8.3 | features, bugfixes, security updates |
+| 1.x               | 11.x   | 7.4 - 8.0 | bugfixes, security updates           |
 
-### 3.2 Release Management
+### 4.2 Release Management
 
 ayacoo_soundcloud uses [**semantic versioning**][2], which means, that
 
@@ -65,7 +110,7 @@ ayacoo_soundcloud uses [**semantic versioning**][2], which means, that
 * and **major updates** (e.g. 1.0.0 => 2.0.0) breaking changes which can be
   refactorings, features or bugfixes.
 
-### 3.3 Contribution
+### 4.3 Contribution
 
 **Pull Requests** are gladly welcome! Nevertheless please don't forget to add an
 issue and connect it to your pull
@@ -77,7 +122,7 @@ feedback how to reproduce the issue. We're
 going
 to accept only bugfixes if we can reproduce the issue.
 
-## 4 Thanks / Notices
+## 5 Thanks / Notices
 
 - Special thanks to Georg Ringer and his [news][3] extension. A good template to
   build a TYPO3 extension. Here, for example, the structure of README.md is
@@ -95,7 +140,7 @@ to accept only bugfixes if we can reproduce the issue.
 
 [5]: https://github.com/b13/online-media-updater
 
-## 5 Support
+## 6 Support
 
 If you are happy with the extension and would like to support it in any way, I
 would appreciate the support of social institutions.
