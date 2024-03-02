@@ -19,5 +19,4 @@ defined('TYPO3') || die();
 
     $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
     $iconRegistry->registerFileExtension($mediaFileExt, 'mimetypes-media-image-' . $mediaFileExt);
-
 })('soundcloud');

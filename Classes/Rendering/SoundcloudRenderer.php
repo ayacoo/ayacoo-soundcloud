@@ -24,10 +24,8 @@ class SoundcloudRenderer implements FileRendererInterface
 {
     public function __construct(
         private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly ConfigurationManager     $configurationManager
-    )
-    {
-
+        private readonly ConfigurationManager $configurationManager
+    ) {
     }
 
     /**
@@ -57,10 +55,11 @@ class SoundcloudRenderer implements FileRendererInterface
      */
     public function canRender(FileInterface $file)
     {
-        return ($file->getMimeType() === 'audio/soundcloud' || $file->getExtension() === 'soundcloud') && $this->getOnlineMediaHelper($file) !== false;
+        return ($file->getMimeType() === 'audio/soundcloud' || $file->getExtension() === 'soundcloud') &&
+            $this->getOnlineMediaHelper($file) !== false;
     }
 
-    public function render(FileInterface $file, $width, $height, array $options = [], $usedPathsRelativeToCurrentScript = false)
+    public function render(FileInterface $file, $width, $height, array $options = [])
     {
         $output = $file->getProperty('soundcloud_html') ?? '';
         if ($this->getPrivacySetting()) {
@@ -76,7 +75,6 @@ class SoundcloudRenderer implements FileRendererInterface
     /**
      * Get online media helper
      *
-     * @param FileInterface $file
      * @return false|OnlineMediaHelperInterface
      */
     protected function getOnlineMediaHelper(FileInterface $file)
@@ -87,7 +85,8 @@ class SoundcloudRenderer implements FileRendererInterface
                 $orgFile = $orgFile->getOriginalFile();
             }
             if ($orgFile instanceof File) {
-                $this->onlineMediaHelper = GeneralUtility::makeInstance(OnlineMediaHelperRegistry::class)->getOnlineMediaHelper($orgFile);
+                $this->onlineMediaHelper = GeneralUtility::makeInstance(OnlineMediaHelperRegistry::class)
+                    ->getOnlineMediaHelper($orgFile);
             } else {
                 $this->onlineMediaHelper = false;
             }
@@ -95,9 +94,6 @@ class SoundcloudRenderer implements FileRendererInterface
         return $this->onlineMediaHelper;
     }
 
-    /**
-     * @return bool
-     */
     protected function getPrivacySetting(): bool
     {
         try {
@@ -105,11 +101,12 @@ class SoundcloudRenderer implements FileRendererInterface
             $extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(
                 ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
             );
-            if (isset($extbaseFrameworkConfiguration['plugin.']['tx_ayacoosoundcloud.'])) {
-                $privacy = (bool)$extbaseFrameworkConfiguration['plugin.']['tx_ayacoosoundcloud.']['settings.']['privacy'] ?? false;
+            $extSettings = $extbaseFrameworkConfiguration['plugin.']['tx_ayacoosoundcloud.']['settings.'] ?? null;
+            if (is_array($extSettings)) {
+                $privacy = (bool)$extSettings['privacy'] ?? false;
             }
             return $privacy;
-        } catch (InvalidConfigurationTypeException $e) {
+        } catch (InvalidConfigurationTypeException) {
             return false;
         }
     }

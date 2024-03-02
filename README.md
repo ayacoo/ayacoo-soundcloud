@@ -26,7 +26,7 @@ And as database fields are added, the DB Analyzer must also be run once.
 
 #### Privacy
 
-With `plugin.tx_ayacoosoundcloud.settings.privacy = 1` you can ensure that the IFrame is built with 
+With `plugin.tx_ayacoosoundcloud.settings.privacy = 1` you can ensure that the IFrame is built with
 data-src instead of src. If you need more options to influence the HTML, you can use a PSR-14 event.
 
 ### 2.3 Hints
@@ -95,7 +95,7 @@ Documentation: https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/ApiOv
 
 | AyacooSoundcloud  | TYPO3  | PHP       | Support / Development                |
 |-------------------|--------|-----------|--------------------------------------|
-| 2.x               | 12.x   | 8.1 - 8.2 | features, bugfixes, security updates |
+| 2.x               | 12.x   | 8.1 - 8.3 | features, bugfixes, security updates |
 | 1.x               | 11.x   | 7.4 - 8.0 | bugfixes, security updates           |
 
 ### 4.2 Release Management

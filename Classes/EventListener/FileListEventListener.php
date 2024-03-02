@@ -39,8 +39,8 @@ final class FileListEventListener
                 return;
             }
 
-            $actionItems['soundcloud'] = '<a href="#" class="btn btn-default t3js-filelist-ayacoosoundcloud'
-                . '" data-filename="' . htmlspecialchars($fileOrFolderObject->getName())
+            $actionItems['soundcloud'] = '<a href="#" class="btn btn-default t3js-filelist-ayacoosoundcloud" '
+                . 'data-filename="' . htmlspecialchars($fileOrFolderObject->getName())
                 . '" data-file-uid="' . $fileProperties['uid']
                 . '" title="' . $this->getLanguageService()->getLL('ayacoo_soundcloud.update') . '">'
                 . $this->iconFactory->getIcon('actions-refresh', Icon::SIZE_SMALL)->render() . '</a>';
@@ -49,9 +49,6 @@ final class FileListEventListener
         $event->setActionItems($actionItems);
     }
 
-    /**
-     * @return LanguageService
-     */
     protected function getLanguageService(): LanguageService
     {
         $languageService = $GLOBALS['LANG'];
