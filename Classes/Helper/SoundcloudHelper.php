@@ -43,6 +43,7 @@ class SoundcloudHelper extends AbstractOEmbedHelper
      * @param string $mediaId
      * @param string $fileExtension
      * @return File
+     * @throws OnlineMediaAlreadyExistsException
      */
     protected function transformMediaIdToFile($mediaId, Folder $targetFolder, $fileExtension)
     {

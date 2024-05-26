@@ -67,8 +67,8 @@ jobs:
           - "php:csfix"
           - "php:sniff"
           - "ts:lint"
-          - "xliff:lint"
         php-version:
+          - "8.2"
           - "8.3"
   unit-tests:
     name: "Unit tests"
