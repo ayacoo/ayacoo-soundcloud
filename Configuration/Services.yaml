@@ -10,12 +10,6 @@ services:
       - '../Classes/Domain/Model/*'
       - '../Classes/Helper/*'
 
-  Ayacoo\AyacooSoundcloud\EventListener\FileListEventListener:
-    tags:
-      - name: event.listener
-        identifier: 'ayacoo/ayacoosoundcloud/filelist-listener'
-        event: TYPO3\CMS\Filelist\Event\ProcessFileListActionsEvent
-
   Ayacoo\AyacooSoundcloud\Command\UpdateMetadataCommand:
     tags:
       - name: 'console.command'
