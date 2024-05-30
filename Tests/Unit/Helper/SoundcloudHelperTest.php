@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Ayacoo\AyacooSoundcloud\Tests\Unit\Helper;
 
 use Ayacoo\AyacooSoundcloud\Helper\SoundcloudHelper;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\AbstractOEmbedHelper;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -22,18 +24,14 @@ final class SoundcloudHelperTest extends UnitTestCase
         $this->subject = new SoundcloudHelper('soundcloud');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isAbstractOEmbedHelper(): void
     {
         self::assertInstanceOf(AbstractOEmbedHelper::class, $this->subject);
     }
 
-    /**
-     * @test
-     * @dataProvider handleSoundcloudTitleDataProvider
-     */
+    #[Test]
+    #[DataProvider('handleSoundcloudTitleDataProvider')]
     public function handleSoundcloudTitleReturnsFilteredTitle(string $input, string $expected)
     {
         $params = [$input];
@@ -66,9 +64,7 @@ final class SoundcloudHelperTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getOEmbedUrlWithJsonFormat(): void
     {
         $mediaId = 'user/song';
@@ -81,9 +77,7 @@ final class SoundcloudHelperTest extends UnitTestCase
         self::assertEquals($expectedUrl, $actualUrl);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getOEmbedUrlWithXmlFormat(): void
     {
         $mediaId = 'user/another-song';
@@ -97,10 +91,8 @@ final class SoundcloudHelperTest extends UnitTestCase
         self::assertEquals($expectedUrl, $actualUrl);
     }
 
-    /**
-     * @test
-     * @dataProvider getAudioIdDataProvider
-     */
+    #[Test]
+    #[DataProvider('getAudioIdDataProvider')]
     public function getAudioIdWithValidUrlReturnsAudioIdOrNull(string $url, mixed $expectedAudioId)
     {
         $params = [$url];
@@ -122,9 +114,7 @@ final class SoundcloudHelperTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getOEmbedDataWithEmbedDataReturnsOptimizedArray()
     {
         $fileResourceMock = $this->createMock(File::class);
@@ -166,9 +156,7 @@ final class SoundcloudHelperTest extends UnitTestCase
         self::assertSame($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getOEmbedDataWithoutEmbedDataReturnsEmptyArray()
     {
         $fileResourceMock = $this->createMock(File::class);
@@ -190,9 +178,7 @@ final class SoundcloudHelperTest extends UnitTestCase
         self::assertSame([], $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPublicUrlReturnsPublicUrl()
     {
         $fileResourceMock = $this->createMock(File::class);
