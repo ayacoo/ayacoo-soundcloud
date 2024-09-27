@@ -22,7 +22,6 @@ return Map::fromEntries([
             SourceScheme::data,
             new UriValue('*.sndcdn.com'),
         ),
-
         // The csp extension is required for the IFrame in the info window
         new Mutation(
             MutationMode::Extend,
