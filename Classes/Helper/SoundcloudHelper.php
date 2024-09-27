@@ -76,7 +76,7 @@ class SoundcloudHelper extends AbstractOEmbedHelper
         $previewImageUrl = trim($properties['soundcloud_thumbnail_url'] ?? '');
 
         // get preview from soundcloud
-        if ($previewImageUrl !== '') {
+        if ($previewImageUrl === '') {
             $oEmbed = $this->getOEmbedData($this->getOnlineMediaId($file));
             $previewImageUrl = $oEmbed['thumbnail_url'];
         }

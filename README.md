@@ -89,6 +89,18 @@ with `$GLOBALS['TCA']['tt_content']['types']['textmedia']['previewRenderer'] = \
 
 Documentation: https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/ApiOverview/ContentElements/CustomBackendPreview.html
 
+### 3.3 Content security policy
+
+If CSP is activated in the backend, policies will be automatically added.
+To do this, the file Configuration/ContentSecurityPolicies.php is used.
+
+If CSP is to be extended for the frontend, the configuration can be added
+in a site package extension or in the global csp.yml
+
+Take a look at the current documentation:
+https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/ApiOverview/ContentSecurityPolicy/Index.html
+
+
 ## 4 Administration corner
 
 ### 4.1 Versions and support
