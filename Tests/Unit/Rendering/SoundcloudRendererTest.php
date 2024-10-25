@@ -7,6 +7,8 @@ namespace Ayacoo\AyacooSoundcloud\Tests\Unit\Rendering;
 use Ayacoo\AyacooSoundcloud\Event\ModifySoundcloudOutputEvent;
 use Ayacoo\AyacooSoundcloud\Helper\SoundcloudHelper;
 use Ayacoo\AyacooSoundcloud\Rendering\SoundcloudRenderer;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface;
@@ -34,17 +36,13 @@ final class SoundcloudRendererTest extends UnitTestCase
         $this->subject = new SoundcloudRenderer($eventDispatcherMock, $configurationManagerMock);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasFileRendererInterface(): void
     {
         self::assertInstanceOf(FileRendererInterface::class, $this->subject);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canRenderWithMatchingMimeTypeReturnsTrue(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['onlineMediaHelpers']['soundcloud'] = SoundcloudHelper::class;
@@ -57,9 +55,7 @@ final class SoundcloudRendererTest extends UnitTestCase
         self::assertTrue($result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canRenderWithMatchingMimeTypeReturnsFalse(): void
     {
         $fileResourceMock = $this->createMock(File::class);
@@ -70,10 +66,8 @@ final class SoundcloudRendererTest extends UnitTestCase
         self::assertFalse($result);
     }
 
-    /**
-     * @test
-     * @dataProvider getPrivacySettingWithExistingConfigReturnsBooleanDataProvider
-     */
+    #[Test]
+    #[DataProvider('getPrivacySettingWithExistingConfigReturnsBooleanDataProvider')]
     public function getPrivacySettingWithExistingConfigReturnsBoolean(array $pluginConfig, bool $expected)
     {
         $eventDispatcherMock = $this->getMockBuilder(EventDispatcherInterface::class)->getMock();
@@ -132,9 +126,7 @@ final class SoundcloudRendererTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderReturnsSoundcloudHtml(): void
     {
         $iframe = '<iframe src="https://www.soundcloud.com" />';
@@ -162,9 +154,7 @@ final class SoundcloudRendererTest extends UnitTestCase
         self::assertSame($expected, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderWithPrivacyTrueReturnsModifiedSoundcloudHtml(): void
     {
         $iframe = '<iframe src="https://www.soundcloud.com" />';

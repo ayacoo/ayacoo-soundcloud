@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ayacoo\AyacooSoundcloud\Helper;
 
+use TYPO3\CMS\Core\Resource\Exception\OnlineMediaAlreadyExistsException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\AbstractOEmbedHelper;
@@ -42,21 +43,23 @@ class SoundcloudHelper extends AbstractOEmbedHelper
      * @param string $mediaId
      * @param string $fileExtension
      * @return File
+     * @throws OnlineMediaAlreadyExistsException
      */
     protected function transformMediaIdToFile($mediaId, Folder $targetFolder, $fileExtension)
     {
         $file = $this->findExistingFileByOnlineMediaId($mediaId, $targetFolder, $fileExtension);
-        if ($file === null) {
-            $fileName = $mediaId . '.' . $fileExtension;
-
-            $oEmbed = $this->getOEmbedData($mediaId);
-            $title = $this->handleSoundcloudTitle($oEmbed['title'] ?? '');
-            if ($title !== '' && $title !== '0') {
-                $fileName = $title . '.' . $fileExtension;
-            }
-            $file = $this->createNewFile($targetFolder, $fileName, $mediaId);
+        if ($file !== null) {
+            throw new OnlineMediaAlreadyExistsException($file, 1695236851);
         }
-        return $file;
+
+        // no existing file create new
+        $fileName = $mediaId . '.' . $fileExtension;
+        $oEmbed = $this->getOEmbedData($mediaId);
+        $title = $this->handleSoundcloudTitle($oEmbed['title'] ?? '');
+        if ($title !== '' && $title !== '0') {
+            $fileName = $title . '.' . $fileExtension;
+        }
+        return $this->createNewFile($targetFolder, $fileName, $mediaId);
     }
 
     public function getPublicUrl(File $file, $relativeToCurrentScript = false)
@@ -71,6 +74,12 @@ class SoundcloudHelper extends AbstractOEmbedHelper
     {
         $properties = $file->getProperties();
         $previewImageUrl = trim($properties['soundcloud_thumbnail_url'] ?? '');
+
+        // get preview from soundcloud
+        if ($previewImageUrl === '') {
+            $oEmbed = $this->getOEmbedData($this->getOnlineMediaId($file));
+            $previewImageUrl = $oEmbed['thumbnail_url'];
+        }
 
         $audioId = $this->getOnlineMediaId($file);
         $temporaryFileName = $this->getTempFolderPath() . 'soundcloud_' . md5($audioId) . '.jpg';
@@ -91,7 +100,7 @@ class SoundcloudHelper extends AbstractOEmbedHelper
      *
      * @return array with metadata
      */
-    public function getMetaData(File $file): array
+    public function getMetaData(File $file)
     {
         $metaData = [];
 
