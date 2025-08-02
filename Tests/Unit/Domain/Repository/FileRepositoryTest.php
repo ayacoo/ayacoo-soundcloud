@@ -29,8 +29,7 @@ final class FileRepositoryTest extends UnitTestCase
     public function getPlatformIdentifierReturnsExpectedIdentifier(
         DoctrineAbstractPlatform $platform,
         string $expected
-    ): void
-    {
+    ): void {
         $params = [$platform];
         $methodName = 'getPlatformIdentifier';
         $result = $this->buildReflectionForProtectedFunction($methodName, $params);

@@ -38,7 +38,7 @@ For the output, the HTML is used directly from [Soundcloud][4].
 #### SQL changes
 
 In order not to have to access the oEmbed interface permanently, three fields are
-added to the sys_file_metadata table
+added to the sys_file_metadata table. These table fields must use utf8mb4_unicode_ci collation.
 
 ## 3 Developer Corner
 
