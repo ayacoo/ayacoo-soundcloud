@@ -26,7 +26,10 @@ final class FileRepositoryTest extends UnitTestCase
 
     #[Test]
     #[DataProvider('platformIdentifierDataProvider')]
-    public function getPlatformIdentifierReturnsExpectedIdentifier(DoctrineAbstractPlatform $platform, string $expected): void
+    public function getPlatformIdentifierReturnsExpectedIdentifier(
+        DoctrineAbstractPlatform $platform,
+        string $expected
+    ): void
     {
         $params = [$platform];
         $methodName = 'getPlatformIdentifier';
