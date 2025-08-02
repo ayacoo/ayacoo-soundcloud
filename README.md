@@ -37,7 +37,7 @@ For the output, the HTML is used directly from [Soundcloud][4].
 
 #### SQL changes
 
-In order not to have to access the oEmbed interface permanently, four fields are
+In order not to have to access the oEmbed interface permanently, three fields are
 added to the sys_file_metadata table
 
 ## 3 Developer Corner
