@@ -81,7 +81,7 @@ class SoundcloudOutputEventListener
 In the backend, the preview is used by TextMediaRenderer. For online media, this
 only displays the provider's icon, in this case soundcloud. If you want to display
 the thumbnail, for example, you need your own renderer that overwrites
-Textmedia. An example renderer is available in the project. Caution: This
+TextMedia. An example renderer is available in the project. Caution: This
 overwrites all text media elements, so only use this renderer as a basis.
 
 You register a renderer in the TCA `Configuration/TCA/Overrides/tt_content.php`
