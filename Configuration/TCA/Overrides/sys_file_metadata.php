@@ -16,6 +16,7 @@ $additionalColumns = [
             'readOnly' => true,
             'size' => 40,
         ],
+        'displayCond' => 'USER:Ayacoo\\AyacooSoundcloud\\Tca\\DisplayCond\\IsSoundcloud->match',
     ],
     'soundcloud_html' => [
         'exclude' => true,
@@ -27,6 +28,7 @@ $additionalColumns = [
             'rows' => 4,
             'readOnly' => true,
         ],
+        'displayCond' => 'USER:Ayacoo\\AyacooSoundcloud\\Tca\\DisplayCond\\IsSoundcloud->match',
     ],
     'soundcloud_author_url' => [
         'exclude' => true,
@@ -38,6 +40,7 @@ $additionalColumns = [
             'readOnly' => true,
             'size' => 40,
         ],
+        'displayCond' => 'USER:Ayacoo\\AyacooSoundcloud\\Tca\\DisplayCond\\IsSoundcloud->match',
     ],
 ];
 
