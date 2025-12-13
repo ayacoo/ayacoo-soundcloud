@@ -16,3 +16,9 @@ services:
         command: 'soundcloud:updateMetadata'
         description: 'Updates the Soundcloud metadata'
         schedulable: true
+
+  Ayacoo\AyacooSoundcloud\EventListener\ModifyIconForResourcePropertiesListener:
+    tags:
+      - name: 'event.listener'
+        identifier: 'ayacoo-soundcloud/modify-icon-for-resource'
+        event: 'TYPO3\CMS\Core\Imaging\Event\ModifyIconForResourcePropertiesEvent'
