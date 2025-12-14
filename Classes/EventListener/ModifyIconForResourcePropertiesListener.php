@@ -13,7 +13,7 @@ use TYPO3\CMS\Core\Resource\File;
  */
 final class ModifyIconForResourcePropertiesListener
 {
-    #[AsEventListener]
+    #[AsEventListener(identifier: 'ayacoo-soundcloud/modify-icon-for-resource')]
     public function __invoke(ModifyIconForResourcePropertiesEvent $event): void
     {
         $resource = $event->getResource();
