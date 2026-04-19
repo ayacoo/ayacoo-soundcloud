@@ -1,7 +1,7 @@
 <?php
 
 $EM_CONF[$_EXTKEY] = [
-    'title' => 'Soundcloud online media helper',
+    'title' => 'SoundCloud online media helper',
     'category' => 'plugin',
     'author' => 'Guido Schmechel',
     'author_email' => 'info@ayacoo.de',
