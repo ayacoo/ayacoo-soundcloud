@@ -15,7 +15,7 @@ use TYPO3\CMS\Core\Resource\Rendering\FileRendererInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
+use TYPO3\CMS\Extbase\Configuration\Exception\NoServerRequestGivenException;
 
 /**
  * Soundcloud renderer class
@@ -106,7 +106,7 @@ class SoundcloudRenderer implements FileRendererInterface
                 $privacy = (bool)$extSettings['privacy'] ?? false;
             }
             return $privacy;
-        } catch (InvalidConfigurationTypeException) {
+        } catch (NoServerRequestGivenException) {
             return false;
         }
     }
