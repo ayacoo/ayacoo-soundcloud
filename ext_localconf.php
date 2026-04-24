@@ -16,7 +16,4 @@ defined('TYPO3') || die();
 
     $GLOBALS['TYPO3_CONF_VARS']['SYS']['FileInfo']['fileExtensionToMimeType'][$mediaFileExt] = 'audio/' . $mediaFileExt;
     $GLOBALS['TYPO3_CONF_VARS']['SYS']['mediafile_ext'] .= ',' . $mediaFileExt;
-
-    $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
-    $iconRegistry->registerFileExtension($mediaFileExt, 'mimetypes-media-image-' . $mediaFileExt);
 })('soundcloud');

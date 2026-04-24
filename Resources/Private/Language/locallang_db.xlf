@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:ayacoo_soundcloud/Resources/Private/Language/locallang_db.xlf" product-name="ayacoo_soundcloud">
+    <body>
+      <trans-unit id="tab.soundcloud">
+        <source>SoundCloud</source>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.soundcloud_thumbnail_url">
+        <source>SoundCloud thumbnail URL</source>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.soundcloud_html">
+        <source>SoundCloud embed HTML</source>
+      </trans-unit>
+      <trans-unit id="sys_file_metadata.soundcloud_author_url">
+        <source>SoundCloud author URL</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
